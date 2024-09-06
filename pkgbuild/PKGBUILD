@@ -3,6 +3,9 @@
 pkgname=comm-webapps
 pkgdesc="Installs and removes Community WebApps"
 # Uncomment and edit the following lines as needed
+provides=('biglinux-webapps')  # O novo pacote fornece as funcionalidades do antigo
+replaces=('biglinux-webapps')  # O novo pacote substitui o antigo
+conflicts=('biglinux-webapps') # O novo pacote entra em conflito com o antigo
 depends=('bigbashview'
 	'python-bs4'
 	'python-requests'
@@ -13,9 +16,6 @@ depends=('bigbashview'
 	'ttf-lato')
 #makedepends=('')
 #optdepends=('')
-#conflicts=('')
-#provides=('')
-#replaces=('')
 pkgver=$(date +%y.%m.%d)
 pkgrel=$(date +%H%M)
 arch=('any')
@@ -76,4 +76,8 @@ package() {
 	if [ -f "README.md" ]; then
 		install -Dm644 README.md "${pkgdir}/usr/share/doc/${pkgname}/README.md"
 	fi
+
+	# Add link to bin path
+	mkdir -p "${pkgdir}/usr/bin"
+	ln -sf "/usr/share/bigbashview/bcc/apps/biglinux-webapps/webapp-manager-biglinux.sh" "${pkgdir}/usr/bin/big-webapps"
 }
